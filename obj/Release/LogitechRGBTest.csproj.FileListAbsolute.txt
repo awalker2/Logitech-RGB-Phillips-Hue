@@ -1,0 +1,7 @@
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\bin\Release\LogitechRGBTest.exe.config
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\bin\Release\LogitechRGBTest.exe
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\bin\Release\LogitechRGBTest.pdb
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Release\LogitechRGBTest.csproj.CoreCompileInputs.cache
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Release\LogitechRGBTest.exe
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Release\LogitechRGBTest.pdb
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Release\LogitechRGBTest.csprojAssemblyReference.cache
