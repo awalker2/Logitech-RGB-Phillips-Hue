@@ -5,3 +5,6 @@ C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Debug\LogitechRG
 C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Debug\LogitechRGBTest.exe
 C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Debug\LogitechRGBTest.pdb
 C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Debug\LogitechRGBTest.csprojAssemblyReference.cache
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\bin\Debug\Newtonsoft.Json.dll
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\bin\Debug\Newtonsoft.Json.xml
+C:\Users\alxwl\source\repos\LogitechRGBTest\LogitechRGBTest\obj\Debug\LogitechRGBTest.csproj.CopyComplete

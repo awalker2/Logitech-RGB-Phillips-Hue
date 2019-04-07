@@ -12,7 +12,7 @@ namespace LogitechRGBTest.Classes
         public MacroActions()
         {
             // Initialize the LED SDK
-            bool LedInitialized = LogitechLEDGSDK.LogiLedInitWithName("Test");
+            bool LedInitialized = LogitechLEDGSDK.LogiLedInitWithName("logitech_rgb");
             if (!LedInitialized)
             {
                 Console.WriteLine("LogitechGSDK.LogiLedInit() failed.");
@@ -23,6 +23,13 @@ namespace LogitechRGBTest.Classes
             // Initialize the Macro SDK with callback implementation
             LogitechMacroGSDK.logiGkeyCB cbInstance = new LogitechMacroGSDK.logiGkeyCB((this.gkeySDKCallback));
             LogitechMacroGSDK.LogiGkeyInitWithoutContext(cbInstance);
+        }
+
+        ~MacroActions()
+        {
+            // Shutdown
+            LogitechMacroGSDK.LogiGkeyShutdown();
+            LogitechLEDGSDK.LogiLedShutdown();
         }
 
         public void gkeySDKCallback(LogitechMacroGSDK.GkeyCode gKeyCode, String gKeyOrButtonString, IntPtr context)
@@ -50,13 +57,6 @@ namespace LogitechRGBTest.Classes
                     Console.WriteLine("Keyboard pressed: " + gKeyOrButtonString);
                 }
             }
-        }
-
-        ~ MacroActions()
-        {
-            // Shutdown
-            LogitechMacroGSDK.LogiGkeyShutdown();
-            LogitechLEDGSDK.LogiLedShutdown();
         }
     }
 }
