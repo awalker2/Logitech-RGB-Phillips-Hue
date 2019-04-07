@@ -10,35 +10,31 @@ namespace Logi_SetTargetZone_Sample_CS
 {
     public class Program
     {
+        // Nightstand light ID: 3
+        // Dresser light ID: 4
+        // Desk RGB strip ID: 5
+
         static async Task Main(string[] args)
         {
-            MacroActions actions = new MacroActions();
+            MacroActions gActions = new MacroActions();
             HueRequests requests = new HueRequests();
 
-            // Set all devices to Black
-            LogitechLEDGSDK.LogiLedSetLighting(0, 0, 0);
+            LightState state1 = await requests.GetStateAsync("3");
+            LightState state2 = await requests.GetStateAsync("4");
 
-            LightState state1 = requests.GetStateAsync("3").Result;
-            LightState state2 = requests.GetStateAsync("4").Result;
-            LightState state3 = requests.GetStateAsync("4").Result;
-
-            if (state1 != null && state1.on == true)
+            if (state1 != null)
             {
-                LogitechLEDGSDK.LogiLedSetLightingForKeyWithKeyName(keyboardNames.Q, 100, 100, 100);
+                gActions.GKeyMimicLightState(keyboardNames.G_1, ref state1);
             }
-            if (state2 != null && state2.on == true)
+            if (state2 != null)
             {
-                LogitechLEDGSDK.LogiLedSetLightingForKeyWithKeyName(keyboardNames.W, 100, 100, 100);
-            }
-            if (state2 != null && state3.on == true)
-            {
-                LogitechLEDGSDK.LogiLedSetLightingForKeyWithKeyName(keyboardNames.E, 50, 50, 50);
+                gActions.GKeyMimicLightState(keyboardNames.G_2, ref state2);
             }
 
-            requests.LightOff("3");
+            await requests.LightOffAsync("3");
             Console.WriteLine("Press \"ENTER\" to continue...");
             Console.ReadLine();
-            requests.LightOn("3");
+            await requests.LightOnAsync("3");
 
             Console.WriteLine("Press \"ENTER\" to continue...");
             Console.ReadLine();

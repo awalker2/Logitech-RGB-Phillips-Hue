@@ -20,13 +20,11 @@ namespace LogitechRGBTest.Classes
         public Boolean on = false;
         public int bri = 0;
         public int hue = 0;
+        public int sat = 0;
     }
 
     class HueRequests
     {
-        // Nightstand light: 9DC82D22/3
-        // Dresser light: 9DC82D22/4
-        // Desk RGB strip: 5
         HttpClient client;
         private const String bridgeIP = "192.168.1.162";
         private const String userId = "OJpMrwAjN3QbSFqj127fL2vEeviz4g8nCtlIqoIC";
@@ -43,15 +41,15 @@ namespace LogitechRGBTest.Classes
             client.Dispose();
         }
 
-        public Boolean LightOn(String id)
+        public async Task<bool> LightOnAsync(String id)
         {
             var payload = "{\"on\": true}";
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
 
             try
             {
-                HttpResponseMessage response = client.PutAsync(
-               $"http://{bridgeIP}/api/{userId}/lights/{id}/state", content).Result;
+                HttpResponseMessage response = await client.PutAsync(
+               $"http://{bridgeIP}/api/{userId}/lights/{id}/state", content);
                 return true;
             }
             catch (Exception e)
@@ -61,15 +59,15 @@ namespace LogitechRGBTest.Classes
             }
         }
 
-        public Boolean LightOff(String id)
+        public async Task<bool> LightOffAsync(String id)
         {
             var payload = "{\"on\": false}";
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
 
             try
             {
-                HttpResponseMessage response = client.PutAsync(
-               $"http://{bridgeIP}/api/{userId}/lights/{id}/state", content).Result;
+                HttpResponseMessage response = await client.PutAsync(
+               $"http://{bridgeIP}/api/{userId}/lights/{id}/state", content);
                 return true;
             }
             catch (Exception e)
@@ -103,6 +101,7 @@ namespace LogitechRGBTest.Classes
                     state.on = (bool)stateJson.GetValue("on");
                     state.bri = (int)stateJson.GetValue("bri");
                     state.hue = (int)stateJson.GetValue("hue");
+                    state.sat = (int)stateJson.GetValue("sat");
                     return state;
                 }
                 else
