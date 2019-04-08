@@ -16,25 +16,13 @@ namespace Logi_SetTargetZone_Sample_CS
 
         static async Task Main(string[] args)
         {
-            MacroActions gActions = new MacroActions();
             HueRequests requests = new HueRequests();
+            MacroActions gActions = new MacroActions(ref requests);
 
-            LightState state1 = await requests.GetStateAsync("3");
-            LightState state2 = await requests.GetStateAsync("4");
-
-            if (state1 != null)
-            {
-                gActions.GKeyMimicLightState(keyboardNames.G_1, ref state1);
-            }
-            if (state2 != null)
-            {
-                gActions.GKeyMimicLightState(keyboardNames.G_2, ref state2);
-            }
-
-            await requests.LightOffAsync("3");
+            /*await requests.LightOffAsync("3");
             Console.WriteLine("Press \"ENTER\" to continue...");
             Console.ReadLine();
-            await requests.LightOnAsync("3");
+            await requests.LightOnAsync("3");*/
 
             Console.WriteLine("Press \"ENTER\" to continue...");
             Console.ReadLine();

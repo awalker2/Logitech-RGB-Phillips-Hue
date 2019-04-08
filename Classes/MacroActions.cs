@@ -23,10 +23,18 @@ namespace LogitechRGBTest.Classes
 
     class MacroActions
     {
+        private static String ID1 = "3";
+        private static String ID2 = "4";
         private static int initDelay = 100;
-        private List<KeyValuePair<string, keyboardNames>> gKeyList;
+        private static Dictionary<string, keyboardNames> gKeyList =
+            new Dictionary<string, keyboardNames>() {
+                { "G1/M1", keyboardNames.G_1 },
+                { "G2/M1", keyboardNames.G_2 },
+                { "G3/M1", keyboardNames.G_3 }
+            };
+        HueRequests requests;
 
-        public MacroActions()
+        public MacroActions(ref HueRequests hueReq)
         {
             // Initialize the LED SDK
             bool LedInitialized = LogitechLEDGSDK.LogiLedInitWithName("logitech_rgb");
@@ -40,12 +48,19 @@ namespace LogitechRGBTest.Classes
 
             // Set all devices to Black
             LogitechLEDGSDK.LogiLedSetLighting(0, 0, 0);
-            // Initialize list to keep track of G keys
-            gKeyList = new List<KeyValuePair<string, keyboardNames>>();
+            // Initialize requests class
+            requests = hueReq;
 
             // Initialize the Macro SDK with callback implementation
             LogitechMacroGSDK.logiGkeyCB cbInstance = new LogitechMacroGSDK.logiGkeyCB((this.GkeySDKCallback));
             LogitechMacroGSDK.LogiGkeyInitWithoutContext(cbInstance);
+
+            // Get the curr state of the lights
+            LightState state1 = requests.GetStateAsync(ID1).Result;
+            LightState state2 = requests.GetStateAsync(ID2).Result;
+            // Mimic the lights with the RGB keyboard buttons
+            GKeyMimicLightState(gKeyList.ElementAt(0).Value, ref state1);
+            GKeyMimicLightState(gKeyList.ElementAt(1).Value, ref state2);
         }
 
         ~MacroActions()
@@ -65,7 +80,7 @@ namespace LogitechRGBTest.Classes
 
         public void GKeyMimicLightState(keyboardNames key, ref LightState state) 
         {
-            if (state.on)
+            if (state != null && state.on)
             {
                 // Scale hue, sat, brightness
                 double H = state.hue * (360.0 / 65535);
@@ -81,8 +96,6 @@ namespace LogitechRGBTest.Classes
             {
                 LogitechLEDGSDK.LogiLedSetLightingForKeyWithKeyName(key, 0, 0, 0);
             }
-
-            gKeyList.Add(new KeyValuePair<string, keyboardNames>(key.ToString(), key));
         }
 
         public void GkeySDKCallback(LogitechMacroGSDK.GkeyCode gKeyCode, String gKeyOrButtonString, IntPtr context)
@@ -107,7 +120,39 @@ namespace LogitechRGBTest.Classes
                 else
                 {
                     // Handle gkey pressed on keyboard/headset
-                    Console.WriteLine("Keyboard pressed: " + gKeyOrButtonString + " " + gKeyCode.complete);
+                    //Console.WriteLine("Keyboard pressed: " + gKeyOrButtonString);
+                    keyboardNames key;
+                    LightState state;
+                    Boolean worked;
+                    String ID;
+                    if (gKeyList.TryGetValue(gKeyOrButtonString, out key))
+                    {
+                        if (key == keyboardNames.G_1)
+                        {
+                            ID = ID1;
+                        }
+                        else if (key == keyboardNames.G_2)
+                        {
+                            ID = ID2;
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                        state = requests.GetStateAsync(ID).Result;
+                        if (state != null && state.on)
+                        {
+                            worked = requests.LightOffAsync(ID).Result;
+                        }
+                        else
+                        {
+                            worked = requests.LightOnAsync(ID).Result;
+                        }
+                        state = requests.GetStateAsync(ID).Result;
+                        GKeyMimicLightState(key, ref state);
+                    }
+                    
                 }
             }
         }
