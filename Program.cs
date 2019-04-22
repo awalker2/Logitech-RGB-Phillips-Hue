@@ -17,12 +17,7 @@ namespace Logi_SetTargetZone_Sample_CS
         static async Task Main(string[] args)
         {
             HueRequests requests = new HueRequests();
-            MacroActions gActions = new MacroActions(ref requests);
-
-            /*await requests.LightOffAsync("3");
-            Console.WriteLine("Press \"ENTER\" to continue...");
-            Console.ReadLine();
-            await requests.LightOnAsync("3");*/
+            MacroActions gActions = new MacroActions(requests);
 
             Console.WriteLine("Press \"ENTER\" to continue...");
             Console.ReadLine();

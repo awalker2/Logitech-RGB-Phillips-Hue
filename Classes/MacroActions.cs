@@ -34,7 +34,7 @@ namespace LogitechRGBTest.Classes
             };
         HueRequests requests;
 
-        public MacroActions(ref HueRequests hueReq)
+        public MacroActions(HueRequests hueReq)
         {
             // Initialize the LED SDK
             bool LedInitialized = LogitechLEDGSDK.LogiLedInitWithName("logitech_rgb");
@@ -59,8 +59,8 @@ namespace LogitechRGBTest.Classes
             LightState state1 = requests.GetStateAsync(ID1).Result;
             LightState state2 = requests.GetStateAsync(ID2).Result;
             // Mimic the lights with the RGB keyboard buttons
-            GKeyMimicLightState(gKeyList.ElementAt(0).Value, ref state1);
-            GKeyMimicLightState(gKeyList.ElementAt(1).Value, ref state2);
+            GKeyMimicLightState(gKeyList.ElementAt(0).Value, state1);
+            GKeyMimicLightState(gKeyList.ElementAt(1).Value, state2);
         }
 
         ~MacroActions()
@@ -78,7 +78,7 @@ namespace LogitechRGBTest.Classes
             return (int)Math.Round(f * 100);
         }
 
-        public void GKeyMimicLightState(keyboardNames key, ref LightState state) 
+        public void GKeyMimicLightState(keyboardNames key, LightState state) 
         {
             if (state != null && state.on)
             {
@@ -150,7 +150,7 @@ namespace LogitechRGBTest.Classes
                             worked = requests.LightOnAsync(ID).Result;
                         }
                         state = requests.GetStateAsync(ID).Result;
-                        GKeyMimicLightState(key, ref state);
+                        GKeyMimicLightState(key, state);
                     }
                     
                 }
